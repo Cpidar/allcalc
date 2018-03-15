@@ -181,6 +181,9 @@ function startCalc(data, no, Ci, option = false) {
     fs.writeFileSync(`${filename}.json`, '[', err => console.log(err))
     let src = [];
     let i = 0;
+    let totalAlloyCount = alloys.valueOf();
+    console.log(totalAlloyCount)
+
     if (data.elements.length > alloyPartsNo) {
         while (a = alloys.next()) {
 
@@ -200,9 +203,7 @@ function startCalc(data, no, Ci, option = false) {
             // src = src.concat(ds);
             // console.log(ds[100])
 
-
-            i++;
-            vorpal.ui.redraw(`${i} of ${alloys.valueOf()}`)
+            vorpal.ui.redraw(`${i++} of ${totalAlloyCount}`)
             if ( src.length > 200000) {
                 let str = JSON.stringify(src).slice(1, -1).concat(',')
                 // console.log(str)
