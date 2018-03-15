@@ -76,7 +76,8 @@ vorpal
     .command('nop [number]')
     .action(function (args, fn) {
         alloyPartsNo = args.number
-        this.log(args);
+        alloys = Combinatorics.bigCombination(R.keys(data.elements), alloyPartsNo);
+        this.log(`Number of Components: ${alloyPartsNo}`);
         fn()
     })
 
@@ -84,6 +85,7 @@ vorpal
     .command('xi [number...]')
     .action(function (args, fn) {
         allowedXi = args.number
+        Ci()
         this.log(args);
         fn()
     })
@@ -162,24 +164,6 @@ vorpal
     })
 
 vorpal
-    .command('gen [number]')
-    .action(function (args, fn) {
-        generator(data, args.number, Ci())
-        // sc.source(125800, generator, data, args.number, Ci()).collect().then(console.log)
-        fn()
-    })
-
-vorpal
-    .command('run')
-    .action(function (args, fn) {
-        var ds2 = sc.require({ all: './alloy-calc.js' }).textFile('src.json').map(x => JSON.parse(x)).map(x => x[0])
-
-        ds1.cartesian(ds2).collect().then(x => console.log(x))
-        // .map(x => all.calc(data, x[0], x[1])).collect(() => console.log('done'));
-        fn()
-    })
-
-vorpal
     .delimiter('allcalc$')
     .show()
 
@@ -197,7 +181,7 @@ function startCalc(data, no, Ci, option = false) {
     fs.writeFileSync(`${filename}.json`, '[', err => console.log(err))
     let src = [];
     let i = 0;
-    if (data.elements.length > 5) {
+    if (data.elements.length > alloyPartsNo) {
         while (a = alloys.next()) {
 
 
@@ -218,8 +202,9 @@ function startCalc(data, no, Ci, option = false) {
 
 
             i++;
-            vorpal.ui.redraw(`${i} of ${alloys.valueOf()}`)
+            
             if ( src.length > 200000) {
+                vorpal.ui.redraw(`${i} of ${alloys.valueOf()}`)
                 let str = JSON.stringify(src).slice(1, -1).concat(',')
                 // console.log(str)
                 fs.appendFileSync(`${filename}.json`, str, err => console.log(err));
