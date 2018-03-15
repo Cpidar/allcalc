@@ -224,7 +224,6 @@ function startCalc(data, no, Ci, option = false) {
                 // console.log(str)
                 fs.appendFileSync(`${filename}.json`, str, err => console.log(err));
                 src = [];
-                break
             }
 
 
