@@ -202,9 +202,8 @@ function startCalc(data, no, Ci, option = false) {
 
 
             i++;
-            
+            vorpal.ui.redraw(`${i} of ${alloys.valueOf()}`)
             if ( src.length > 200000) {
-                vorpal.ui.redraw(`${i} of ${alloys.valueOf()}`)
                 let str = JSON.stringify(src).slice(1, -1).concat(',')
                 // console.log(str)
                 fs.appendFileSync(`${filename}.json`, str, err => console.log(err));
