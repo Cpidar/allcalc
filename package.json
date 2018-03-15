@@ -1,0 +1,24 @@
+{
+  "name": "allcalc",
+  "version": "2.0.0",
+  "description": "superalloy termocynamics calculations",
+  "main": "index.js",
+  "scripts": {
+    "allcalc": "node index.js"
+  },
+  "bin": {
+    "allcalc": "./index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.0",
+    "js-combinatorics": "^0.5.3",
+    "json2xls": "^0.1.2",
+    "jsonfile": "^4.0.0",
+    "ramda": "^0.25.0",
+    "skale": "^1.2.0",
+    "vorpal": "^1.12.0"
+  }
+}
