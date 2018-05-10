@@ -51,7 +51,7 @@ function calc(data, option = false) {
         let isDeltaPass = (typeof option.minDelta == 'number' ? delta > option.minDelta : true) && (typeof option.maxDelta == 'number' ? delta < option.maxDelta : true)
         if (!isDeltaPass) return;
 
-        let dS = weightTotal((x, y) => 8.3144 * x * y, xi, xi);
+        let dS = weightTotal((x, y) =>  -8.3144 * x * Math.log(y), xi, xi);
         let isdSPass = (typeof option.mindS == 'number' ? dS > option.mindS : true) && (typeof option.maxdS == 'number' ? dS < option.maxdS : true)
         if (!isdSPass) return;
 

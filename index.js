@@ -220,12 +220,10 @@ function startCalc(data, no, Ci, option = false) {
 
         let ds = Combinatorics.cartesianProduct([alloyData], Ci)
             .forEach(x => {
-                console.log("start")
                 let obj = Object.assign(x[0], { xi: x[1] })
                 let info = allcom.calc(obj, option);
                 if(info) src.push(info)
             })
-            console.log("End")
 
             // jsonfile.writeFileSync(`${filename}.json`, src, err => console.log(err));
 
