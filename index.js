@@ -20,6 +20,8 @@ const allcom = require('./alloy-calc');
 let alloyPartsNo = 5;
 
 let allowedXi = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35];
+// let allowedXi = [0.20, 0.10, 0.05];
+
 
 let filename;
 
@@ -46,7 +48,7 @@ vorpal
         // if (elements.length == 5) {
 
         // } else {
-            args.options.filter ? startCalc(data, 100,Ci() , option) : startCalc(data, 100, Ci());
+            args.options.filter ? startCalc(data, 100, Ci(), option) : startCalc(data, 100, Ci());
         // }
 
         fn()
@@ -76,8 +78,7 @@ vorpal
     .command('nop [number]')
     .action(function (args, fn) {
         alloyPartsNo = args.number
-        alloys = Combinatorics.bigCombination(R.keys(data.elements), alloyPartsNo);
-        this.log(`Number of Components: ${alloyPartsNo}`);
+        this.log(args);
         fn()
     })
 
@@ -85,7 +86,6 @@ vorpal
     .command('xi [number...]')
     .action(function (args, fn) {
         allowedXi = args.number
-        Ci()
         this.log(args);
         fn()
     })
@@ -178,13 +178,10 @@ const CiCalc = () => {
 const Ci = R.memoize(() => CiCalc());
 
 function startCalc(data, no, Ci, option = false) {
-    fs.writeFileSync(`${filename}.json`, '[', err => console.log(err))
+    // fs.writeFileSync(`${filename}.json`, '[', err => console.log(err))
     let src = [];
     let i = 0;
-    let totalAlloyCount = alloys.valueOf();
-    console.log(totalAlloyCount)
-
-    if (data.elements.length > alloyPartsNo) {
+    if (data.elements.length > 5) {
         while (a = alloys.next()) {
 
 
@@ -203,7 +200,9 @@ function startCalc(data, no, Ci, option = false) {
             // src = src.concat(ds);
             // console.log(ds[100])
 
-            vorpal.ui.redraw(`${i++} of ${totalAlloyCount}`)
+
+            i++;
+            vorpal.ui.redraw(`${i} of ${alloys.valueOf()}`)
             if ( src.length > 200000) {
                 let str = JSON.stringify(src).slice(1, -1).concat(',')
                 // console.log(str)
@@ -214,7 +213,6 @@ function startCalc(data, no, Ci, option = false) {
 
         }
     } else {
-        console.log(data)
         let alloyData = data;
         let H = alloyData.entalpy.map((x, i) => R.take(i, x))
         alloyData.entalpy = R.unnest(H.map((x, i) => x.map((y, j) => [y, i, j])))
@@ -222,16 +220,19 @@ function startCalc(data, no, Ci, option = false) {
 
         let ds = Combinatorics.cartesianProduct([alloyData], Ci)
             .forEach(x => {
+                console.log("start")
                 let obj = Object.assign(x[0], { xi: x[1] })
                 let info = allcom.calc(obj, option);
                 if(info) src.push(info)
             })
+            console.log("End")
 
-            jsonfile.writeFileSync(`${filename}.json`, src, err => console.log(err));
+            // jsonfile.writeFileSync(`${filename}.json`, src, err => console.log(err));
 
     }
     src.push({})
-    let str = JSON.stringify(src).slice(1)
+    src.pop()
+    let str = JSON.stringify(src)
     fs.appendFileSync(`${filename}.json`, str, err => console.log(err));
 }
 
