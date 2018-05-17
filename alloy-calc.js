@@ -47,7 +47,7 @@ function calc(data, option = false) {
         if (!isDnPass) return;
 
         let Ra = weightTotal((x, y) => x * y, data.radius, xi);
-        let delta = data.radius.map((x, i) => xi[i] * (1 - x / Ra) ** 2).reduce((acc, cur) => acc + cur, 0);
+        let delta = data.radius.map((r, i) => xi[i] * (1 - r / Ra) ** 2).reduce((acc, cur) => acc + cur, 0) ** 0.5;
         let isDeltaPass = (typeof option.minDelta == 'number' ? delta > option.minDelta : true) && (typeof option.maxDelta == 'number' ? delta < option.maxDelta : true)
         if (!isDeltaPass) return;
 

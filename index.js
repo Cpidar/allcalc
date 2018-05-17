@@ -202,7 +202,7 @@ function startCalc(data, no, Ci, option = false) {
 
 
             i++;
-            vorpal.ui.redraw(`${i} of ${alloys.valueOf()}`)
+            vorpal.ui.redraw(`${i} of ${alloys.valueOf()} calcuted. ${src.length} funded.`)
             if ( src.length > 200000) {
                 let str = JSON.stringify(src).slice(1, -1).concat(',')
                 // console.log(str)
