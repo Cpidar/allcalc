@@ -1,0 +1,9 @@
+ex h n as rb sr y tc ru rh pd cs la ce pr nd pm sm eu gd tb dy ho er tm yb lu hf os pt au hg tl th pb u pu
+
+D -h'0.045'
+
+O -l'10'
+
+Dn -h'4'
+
+H -l'-2' -h'5'
