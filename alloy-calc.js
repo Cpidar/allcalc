@@ -30,7 +30,7 @@ const include = (data, i) => {
 
 function calc(data, option = false) {
 
-    const omegaCalc = (Tm, dH, dS) => -Tm * dS / (1000 * dH);
+    const omegaCalc = (Tm, dH, dS) => Math.abs(-Tm * dS / (1000 * dH));
 
     let formula = data.elements.reduce((acc, cur) => acc + cur, '');
     let xi = data.xi;
@@ -62,7 +62,7 @@ function calc(data, option = false) {
 
 
         let En = weightTotal((x, y) => x * y, data.electronegativities, xi);
-        let deltaEN = data.electronegativities.map((x, i) => xi[i] * (x - En) ** 2).reduce((acc, cur) => acc + cur, 0);
+        let deltaEN = (data.electronegativities.map((x, i) => xi[i] * (x - En) ** 2).reduce((acc, cur) => acc + cur, 0)) ** 0.5;
         let isEnPass = (typeof option.minEN == 'number' ? deltaEN > option.minEN : true) && (typeof option.maxEN == 'number' ? deltaEN < option.maxEN : true)
         if (!isEnPass) return;
 
@@ -81,7 +81,7 @@ function calc(data, option = false) {
         let density = weightTotal((x, y) => x * y, data.densities, xi);
         let delta = data.radius.map((r, i) => xi[i] * (1 - r / Ra) ** 2).reduce((acc, cur) => acc + cur, 0) ** 0.5;
         let En = weightTotal((x, y) => x * y, data.electronegativities, xi);
-        let deltaEN = data.electronegativities.map((x, i) => xi[i] * (x - En) ** 2).reduce((acc, cur) => acc + cur, 0);
+        let deltaEN = (data.electronegativities.map((x, i) => xi[i] * (x - En) ** 2).reduce((acc, cur) => acc + cur, 0)) ** 0.5;
 
         let info = { formula, xi, dH, dS, density, omega, delta, deltaEN, Ra, En, Tm };
         // if (info) fs.appendFileSync('result.json', JSON.stringify(info), (err, res) => err ? console.log(err) : console.log('success'));

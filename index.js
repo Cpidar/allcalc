@@ -48,7 +48,7 @@ vorpal
         // if (elements.length == 5) {
 
         // } else {
-            args.options.filter ? startCalc(data, 100, Ci(), option) : startCalc(data, 100, Ci());
+        args.options.filter ? startCalc(data, 100, Ci(), option) : startCalc(data, 100, Ci());
         // }
 
         fn()
@@ -90,68 +90,68 @@ vorpal
         fn()
     })
 
-    vorpal
+vorpal
     .command('H')
     .option('-l, --low <min>')
     .option('-h, --high <max>')
     .action(function (args, fn) {
-        if(args.options.low) option.mindH = Number(args.options.low.slice(1, args.options.low.length - 1));
-        if(args.options.high) option.maxdH = Number(args.options.high.slice(1, args.options.high.length - 1));
+        if (args.options.low) option.mindH = Number(args.options.low.slice(1, args.options.low.length - 1));
+        if (args.options.high) option.maxdH = Number(args.options.high.slice(1, args.options.high.length - 1));
         this.log(`Hmin: ${option.mindH} Hmax: ${option.maxdH}`);
         fn()
     })
 
-    vorpal
+vorpal
     .command('S')
     .option('-l, --low <min>')
     .option('-h, --high <max>')
     .action(function (args, fn) {
-        if(args.options.low) option.mindS = Number(args.options.low.slice(1, args.options.low.length - 1));
-        if(args.options.high) option.maxdS = Number(args.options.high.slice(1, args.options.high.length - 1));
+        if (args.options.low) option.mindS = Number(args.options.low.slice(1, args.options.low.length - 1));
+        if (args.options.high) option.maxdS = Number(args.options.high.slice(1, args.options.high.length - 1));
         this.log(`Smin: ${option.mindS} Smax: ${option.maxdS}`);
         fn()
     })
 
-    vorpal
+vorpal
     .command('Dn')
     .option('-l, --low <min>')
     .option('-h, --high <max>')
     .action(function (args, fn) {
-        if(args.options.low) option.mindn = Number(args.options.low.slice(1, args.options.low.length - 1));
-        if(args.options.high) option.maxdn = Number(args.options.high.slice(1, args.options.high.length - 1));
+        if (args.options.low) option.mindn = Number(args.options.low.slice(1, args.options.low.length - 1));
+        if (args.options.high) option.maxdn = Number(args.options.high.slice(1, args.options.high.length - 1));
         this.log(`Dn min: ${option.mindn} Dnmax: ${option.maxdn}`);
         fn()
     })
 
-    vorpal
+vorpal
     .command('O')
     .option('-l, --low <min>')
     .option('-h, --high <max>')
     .action(function (args, fn) {
-        if(args.options.low) option.minOmega = Number(args.options.low.slice(1, args.options.low.length - 1));
-        if(args.options.high) option.maxOmega = Number(args.options.high.slice(1, args.options.high.length - 1));
+        if (args.options.low) option.minOmega = Number(args.options.low.slice(1, args.options.low.length - 1));
+        if (args.options.high) option.maxOmega = Number(args.options.high.slice(1, args.options.high.length - 1));
         this.log(`Omin: ${option.minOmega} Omax: ${option.maxOmega}`);
         fn()
     })
 
-    vorpal
+vorpal
     .command('D')
     .option('-l, --low <min>')
     .option('-h, --high <max>')
     .action(function (args, fn) {
-        if(args.options.low) option.minDelta = Number(args.options.low.slice(1, args.options.low.length - 1));
-        if(args.options.high) option.maxDelta = Number(args.options.high.slice(1, args.options.high.length - 1));
+        if (args.options.low) option.minDelta = Number(args.options.low.slice(1, args.options.low.length - 1));
+        if (args.options.high) option.maxDelta = Number(args.options.high.slice(1, args.options.high.length - 1));
         this.log(`Dmin: ${option.minDelta} Dmax: ${option.maxDelta}`);
         fn()
     })
 
-    vorpal
+vorpal
     .command('E')
     .option('-l, --low <min>')
     .option('-h, --high <max>')
     .action(function (args, fn) {
-        if(args.options.low) option.minEN = Number(args.options.low.slice(1, args.options.low.length - 1));
-        if(args.options.high) option.maxEN = Number(args.options.high.slice(1, args.options.high.length - 1));
+        if (args.options.low) option.minEN = Number(args.options.low.slice(1, args.options.low.length - 1));
+        if (args.options.high) option.maxEN = Number(args.options.high.slice(1, args.options.high.length - 1));
         this.log(`Emin: ${option.minEN} Emax: ${option.maxEN}`);
         fn()
     })
@@ -195,7 +195,7 @@ function startCalc(data, no, Ci, option = false) {
                 .forEach(x => {
                     let obj = Object.assign(x[0], { xi: x[1] })
                     let info = allcom.calc(obj, option);
-                    if(info != null) src.push(info)
+                    if (info != null) src.push(info)
                 })
             // src = src.concat(ds);
             // console.log(ds[100])
@@ -203,7 +203,7 @@ function startCalc(data, no, Ci, option = false) {
 
             i++;
             vorpal.ui.redraw(`${i} of ${alloys.valueOf()} calcuted. ${src.length} funded.`)
-            if ( src.length > 200000) {
+            if (src.length > 200000) {
                 let str = JSON.stringify(src).slice(1, -1).concat(',')
                 // console.log(str)
                 fs.appendFileSync(`${filename}.json`, str, err => console.log(err));
@@ -222,10 +222,10 @@ function startCalc(data, no, Ci, option = false) {
             .forEach(x => {
                 let obj = Object.assign(x[0], { xi: x[1] })
                 let info = allcom.calc(obj, option);
-                if(info) src.push(info)
+                if (info) src.push(info)
             })
 
-            // jsonfile.writeFileSync(`${filename}.json`, src, err => console.log(err));
+        // jsonfile.writeFileSync(`${filename}.json`, src, err => console.log(err));
 
     }
     src.push({})
