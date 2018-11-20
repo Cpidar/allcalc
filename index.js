@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const vorpal = require('vorpal')();
+const util = require('util');
+const exec = require('child_process').exec;
 
 const Combinatorics = require('js-combinatorics');
 const R = require('ramda');
@@ -164,6 +166,13 @@ vorpal
     })
 
 vorpal
+    .command('open [filename]')
+    .action(function (args, fn) {
+        args.filename ? exec('start ' + args.filename + '.xlsx') : this.log('please specify filename')
+        fn()
+    })
+
+vorpal
     .delimiter('allcalc$')
     .show()
 
@@ -237,5 +246,4 @@ function startCalc(data, no, Ci, option = false) {
 const toExcel = (excelfilename) => {
     const result = json2xls(JSON.parse(fs.readFileSync(`${filename}.json`)));
     fs.writeFileSync(`${excelfilename}.xlsx`, result, 'binary')
-
 }
