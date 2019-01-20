@@ -12,9 +12,11 @@ const exclude = (data, i) => {
     let electronegativities = dropIndex(i, data.electronegativities);
     let meltingPoints = dropIndex(i, data.meltingPoints);
     let radius = dropIndex(i, data.radius);
+    let aweight = dropIndex(i, data.aweight);
     return Object.assign({}, {
         entalpy,
         elements,
+        aweight,
         densities,
         electronegativities,
         meltingPoints,
@@ -42,7 +44,9 @@ function calc(data, option = false) {
         let isdHPass = (typeof option.mindH == 'number' ? dH > option.mindH : true) && (typeof option.maxdH == 'number' ? dH < option.maxdH : true);
         if (!isdHPass) return;
 
-        let density = weightTotal((x, y) => x * y, data.densities, xi);
+        let aweight = weightTotal((x, y) => x * y, data.aweight, xi);
+        let awaitPerDensity = weightTotal((x, y, z) => x * y / z, data.aweight, xi, data.densities);
+        let density = aweight / awaitPerDensity;
         let isDnPass = (typeof option.maxdn == 'number' ? density < option.maxdn : true) && (typeof option.mindn == 'number' ? density > option.mindn : true)
         if (!isDnPass) return;
 
@@ -78,7 +82,9 @@ function calc(data, option = false) {
         let Tm = weightTotal((x, y) => x * y, data.meltingPoints, xi);
         let omega = omegaCalc(Tm, dH, dS);
         let Ra = weightTotal((x, y) => x * y, data.radius, xi);
-        let density = weightTotal((x, y) => x * y, data.densities, xi);
+        let aweight = weightTotal((x, y) => x * y, data.aweight, xi);
+        let awaitPerDensity = weightTotal((x, y, z) => x * y / z, data.aweight, xi, data.densities);
+        let density = aweight / awaitPerDensity;
         let delta = data.radius.map((r, i) => xi[i] * (1 - r / Ra) ** 2).reduce((acc, cur) => acc + cur, 0) ** 0.5;
         let En = weightTotal((x, y) => x * y, data.electronegativities, xi);
         let deltaEN = (data.electronegativities.map((x, i) => xi[i] * (x - En) ** 2).reduce((acc, cur) => acc + cur, 0)) ** 0.5;

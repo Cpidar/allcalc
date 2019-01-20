@@ -16,6 +16,8 @@ var idensities = require('./densities.json');
 var ielectronegativities = require('./electronegativity.json');
 var imeltingPoints = require('./melting-points.json');
 var iradius = require('./radius.json');
+var iaweight = require('./atomic-weight.json');
+
 
 const allcom = require('./alloy-calc');
 
@@ -34,6 +36,7 @@ let initData = {
     electronegativities: ielectronegativities,
     meltingPoints: imeltingPoints,
     radius: iradius,
+    aweight: iaweight
 }
 
 let option = {}
