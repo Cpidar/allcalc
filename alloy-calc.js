@@ -45,7 +45,7 @@ function calc(data, option = false) {
         if (!isdHPass) return;
 
         let aweight = weightTotal((x, y) => x * y, data.aweight, xi);
-        let awaitPerDensity = weightTotal((x, y, z) => x * y / z, data.aweight, xi, data.densities);
+        let awaitPerDensity = weightTotal((x, y) => x / y, R.zipWith((x, y) => x * y, data.aweight, xi), data.densities);
         let density = aweight / awaitPerDensity;
         let isDnPass = (typeof option.maxdn == 'number' ? density < option.maxdn : true) && (typeof option.mindn == 'number' ? density > option.mindn : true)
         if (!isDnPass) return;
@@ -83,7 +83,7 @@ function calc(data, option = false) {
         let omega = omegaCalc(Tm, dH, dS);
         let Ra = weightTotal((x, y) => x * y, data.radius, xi);
         let aweight = weightTotal((x, y) => x * y, data.aweight, xi);
-        let awaitPerDensity = weightTotal((x, y, z) => x * y / z, data.aweight, xi, data.densities);
+        let awaitPerDensity = weightTotal((x, y) => x / y, R.zipWith((x, y) => x * y, data.aweight, xi), data.densities);
         let density = aweight / awaitPerDensity;
         let delta = data.radius.map((r, i) => xi[i] * (1 - r / Ra) ** 2).reduce((acc, cur) => acc + cur, 0) ** 0.5;
         let En = weightTotal((x, y) => x * y, data.electronegativities, xi);
