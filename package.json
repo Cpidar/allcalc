@@ -1,6 +1,6 @@
 {
   "name": "allcalc",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "superalloy thermodynamics calculations",
   "main": "index.js",
   "scripts": {
