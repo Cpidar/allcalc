@@ -89,13 +89,10 @@ vorpal
 
 vorpal
     .command('xi [number...]')
-    .option('-f, --first')
-    .option('-l, --last')
-    .option('-s, --step')
     .action(function (args, fn) {
         const xrange = (start, stop, step) => Array(Math.ceil(((stop - start) / step) + 1)).fill(start).map((x, y) => x + y * step)
         allowedXi = xrange(...args.number)
-        this.log(allowedXi.join('-'));
+        this.log(CiCalc().length);
         fn()
     })
 
@@ -185,10 +182,15 @@ vorpal
 
 
 const CiCalc = () => {
+    const xi = []
     let pickIndex = R.compose(R.values, R.pickAll);
-    let xi = Combinatorics.baseN(allowedXi, alloyPartsNo).toArray();
-    let indexes = xi.map((x, i) => [i, x.reduce((acc, cur) => acc + cur)]).filter(x => x[1] == 1).map(x => x[0])
-    return pickIndex(indexes, xi);
+    let cmb = Combinatorics.baseN(allowedXi, alloyPartsNo);
+    while(a = cmb.next()) {
+        if(a.reduce((acc, cur) => acc + cur) === 1)
+        xi.push(a)
+    }
+    // let indexes = xi.map((x, i) => [i, x.reduce((acc, cur) => acc + cur)]).filter(x => x[1] == 1).map(x => x[0])
+    return xi;
 }
 
 const Ci = R.memoize(() => CiCalc());
