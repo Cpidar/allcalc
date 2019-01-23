@@ -90,8 +90,9 @@ vorpal
 vorpal
     .command('xi [number...]')
     .action(function (args, fn) {
-        const xrange = (start, stop, step) => Array(Math.ceil(((stop - start) / step) + 1)).fill(start).map((x, y) => x + y * step)
+        const xrange = (start, stop, step) => Array(Math.ceil(((stop - start) / step) + 1)).fill(start).map((x, y) => +(x + y * step).toFixed(3))
         allowedXi = xrange(...args.number)
+        this.log(allowedXi.join('-'))
         this.log(CiCalc().length + ' alloys to be computed');
         fn()
     })
