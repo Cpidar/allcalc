@@ -92,7 +92,7 @@ vorpal
     .action(function (args, fn) {
         const xrange = (start, stop, step) => Array(Math.ceil(((stop - start) / step) + 1)).fill(start).map((x, y) => x + y * step)
         allowedXi = xrange(...args.number)
-        this.log(CiCalc().length);
+        this.log(CiCalc().length + ' alloys to be computed');
         fn()
     })
 
@@ -183,7 +183,7 @@ vorpal
 
 const CiCalc = () => {
     const xi = []
-    let pickIndex = R.compose(R.values, R.pickAll);
+    // let pickIndex = R.compose(R.values, R.pickAll);
     let cmb = Combinatorics.baseN(allowedXi, alloyPartsNo);
     while(a = cmb.next()) {
         if(a.reduce((acc, cur) => acc + cur) === 1)
