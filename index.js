@@ -89,9 +89,13 @@ vorpal
 
 vorpal
     .command('xi [number...]')
+    .option('-f, --first')
+    .option('-l, --last')
+    .option('-s, --step')
     .action(function (args, fn) {
-        allowedXi = args.number
-        this.log(args);
+        const xrange = (start, stop, step) => Array(Math.ceil(((stop - start) / step) + 1)).fill(start).map((x, y) => x + y * step)
+        allowedXi = xrange(...args.number)
+        this.log(allowedXi.join('-'));
         fn()
     })
 
