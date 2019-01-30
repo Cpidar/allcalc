@@ -23,7 +23,7 @@ const allcom = require('./alloy-calc');
 
 let alloyPartsNo = 5;
 
-let allowedXi = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35];
+let allowedXi = [5, 10, 15, 20, 25, 30, 35];
 // let allowedXi = [0.20, 0.10, 0.05];
 
 
@@ -90,7 +90,7 @@ vorpal
 vorpal
     .command('xi [number...]')
     .action(function (args, fn) {
-        const xrange = (start, stop, step) => Array(Math.ceil(((stop - start) / step) + 1)).fill(start).map((x, y) => +(x + y * step).toFixed(3))
+        const xrange = (start, stop, step) => Array(Math.ceil(((stop - start) / step) + 1)).fill(start).map((x, y) => +(x + y * step))
         allowedXi = xrange(...args.number)
         this.log(allowedXi.join('-'))
         this.log(CiCalc().length + ' alloys to be computed');
@@ -187,8 +187,10 @@ const CiCalc = () => {
     // let pickIndex = R.compose(R.values, R.pickAll);
     let cmb = Combinatorics.baseN(allowedXi, alloyPartsNo);
     while(a = cmb.next()) {
-        if(a.reduce((acc, cur) => acc + cur) === 1)
-        xi.push(a)
+        if(a.reduce((acc, cur) => acc + cur) === 100) {
+            let b = a.map(x => (x / 100))
+            xi.push(b)
+        }
     }
     // let indexes = xi.map((x, i) => [i, x.reduce((acc, cur) => acc + cur)]).filter(x => x[1] == 1).map(x => x[0])
     return xi;
@@ -222,7 +224,7 @@ function startCalc(data, no, Ci, option = false) {
 
             i++;
             vorpal.ui.redraw(`${i} of ${alloys.valueOf()} calcuted. ${src.length} funded.`)
-            if (src.length > 200000) {
+            if (src.length > 20000) {
                 let str = JSON.stringify(src).slice(1, -1).concat(',')
                 // console.log(str)
                 fs.appendFileSync(`${filename}.json`, str, err => console.log(err));
