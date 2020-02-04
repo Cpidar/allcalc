@@ -39,6 +39,22 @@ function calc(data, option = false) {
 
     let weightTotal = R.compose(R.reduce(R.add, 0), R.zipWith)
 
+    let getMean = function (d) {
+        return d.reduce(function (a, b) {
+            return Number(a) + Number(b);
+        }) / d.length;
+    };
+
+    let getSD = function (d) {
+        let m = getMean(d);
+        return Math.sqrt(d.reduce(function (sq, n) {
+                return sq + Math.pow(n - m, 2);
+            }, 0) / (d.length - 1));
+    };
+
+    let TmSD = getSD(data.meltingPoints)
+
+
     if (option) {
         let dH = data.entalpy.map(x => 4 * x[0] * xi[x[1]] * xi[x[2]]).reduce((acc, cur) => acc + cur, 0)
         let isdHPass = (typeof option.mindH == 'number' ? dH > option.mindH : true) && (typeof option.maxdH == 'number' ? dH < option.maxdH : true);
@@ -70,7 +86,7 @@ function calc(data, option = false) {
         let isEnPass = (typeof option.minEN == 'number' ? deltaEN > option.minEN : true) && (typeof option.maxEN == 'number' ? deltaEN < option.maxEN : true)
         if (!isEnPass) return;
 
-        let info = { formula, xi, dH, dS, density, omega, delta, deltaEN };
+        let info = { formula, xi, dH, dS, density, omega, delta, deltaEN, Ra, En, Tm, TmSD };
 
         return info;
 
@@ -89,7 +105,7 @@ function calc(data, option = false) {
         let En = weightTotal((x, y) => x * y, data.electronegativities, xi);
         let deltaEN = (data.electronegativities.map((x, i) => xi[i] * (x - En) ** 2).reduce((acc, cur) => acc + cur, 0)) ** 0.5;
 
-        let info = { formula, xi, dH, dS, density, omega, delta, deltaEN, Ra, En, Tm };
+        let info = { formula, xi, dH, dS, density, omega, delta, deltaEN, Ra, En, Tm, TmSD };
         // if (info) fs.appendFileSync('result.json', JSON.stringify(info), (err, res) => err ? console.log(err) : console.log('success'));
         return info;
     }

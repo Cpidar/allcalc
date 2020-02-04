@@ -9,6 +9,8 @@ const R = require('ramda');
 const fs = require('fs');
 const json2xls = require('json2xls');
 const jsonfile = require('jsonfile');
+const leveldown = require('leveldown')
+const levelup = require('levelup')
 
 var ientalpy = require('./entalpy.json');
 var ielements = require('./elements.json');
@@ -17,6 +19,9 @@ var ielectronegativities = require('./electronegativity.json');
 var imeltingPoints = require('./melting-points.json');
 var iradius = require('./radius.json');
 var iaweight = require('./atomic-weight.json');
+
+const db = leveldown('./db')
+db.open({ compression: false }, function(err, res) {})
 
 
 const allcom = require('./alloy-calc');
@@ -58,6 +63,18 @@ vorpal
 
         fn()
     })
+
+vorpal
+    .command('init')
+    .action(function (args, fn) {
+        db.put('key-567', 0.75675, function (err) {
+            if (err) throw err
+          
+            
+          })
+        fn()
+    })
+
 
 vorpal
     .command('in [el...]')
@@ -216,7 +233,7 @@ function startCalc(data, no, Ci, option = false) {
                 .forEach(x => {
                     let obj = Object.assign(x[0], { xi: x[1] })
                     let info = allcom.calc(obj, option);
-                    if (info != null) src.push(info)
+                    if (info != null) src.push({type: 'put', key: `${info.formula}-${info.xi.join('')}-H`, value: info.dH})
                 })
             // src = src.concat(ds);
             // console.log(ds[100])
